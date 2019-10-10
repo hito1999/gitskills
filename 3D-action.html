@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>3D效果轮播图</title>
+    <link href="3D-action.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <ul class="body">
+        <li class="action1" id="one">
+            <!-- <img src="E:\壁纸\IMG_4322.JPG" > -->
+        </li>
+        <li class="action2" id="two">
+            <!-- <img src="E:\壁纸\IMG_4323.JPG" > -->
+        </li>
+        <li class="action3" id="three">
+            <!-- <img src="E:\壁纸\IMG_4489.JPG" >  -->
+        </li> 
+    </ul>
+
+    <script>
+        var a=null;
+        var b=null;
+        var c=null;//记录三个位置的li，以便于在进行操作时更加便利
+        var bo=document.getElementsByClassName("body")[0];
+        var li;
+        var x;
+        var m,n;
+        var t1;
+        var t2;
+        li=bo.getElementsByTagName("li");
+
+        function rewrite(){
+                    if(parseInt(getComputedStyle(li[0]).height)==240&&parseInt(getComputedStyle(li[1]).height)==300&&parseInt(getComputedStyle(li[2]).height)==270)
+                    {
+                        li[0].className="action3";
+                        li[1].className="action1";
+                        li[2].className="action2";
+                        cleanstyle();
+                    }
+                    if(parseInt(getComputedStyle(li[1]).height)==240&&parseInt(getComputedStyle(li[2]).height)==300&&parseInt(getComputedStyle(li[0]).height)==270)
+                    {
+                        li[0].className="action2";
+                        li[1].className="action3";
+                        li[2].className="action1";
+                        cleanstyle();
+                    }
+                    if(parseInt(getComputedStyle(li[2]).height)==240&&parseInt(getComputedStyle(li[0]).height)==300&&parseInt(getComputedStyle(li[1]).height)==270)
+                    {
+                        li[0].className="action1";
+                        li[1].className="action2";
+                        li[2].className="action3";
+                        cleanstyle();
+                    }
+                }
+        function cleanstyle(){
+            for(var i=0;i<3;i++)
+            {
+                li[i].style=null;
+            }
+        }
+        t2=setInterval("rewrite()",1);
+        for(i=0;i<3;i++)
+        {
+            (function(i){
+                li[i].onmousedown=function(e){
+                    if(parseInt(getComputedStyle(li[i]).height)==240||parseInt(getComputedStyle(li[i]).height)==270||parseInt(getComputedStyle(li[i]).height)==300)
+                    {
+                        window.clearInterval(t2);
+                        cleanstyle();
+                        console.log("now in the li");
+                        console.log(i);
+                        if(i==0)
+                        {
+                            m=1;
+                            n=2;
+                        }
+                        if(i==1)
+                        {
+                            m=2;
+                            n=0;
+                        }
+                        if(i==2)
+                        {
+                            m=0;
+                            n=1;
+                        }
+                        if(parseInt(getComputedStyle(li[i]).height)==240)
+                        {
+                            li[i].className="style3";
+                            li[m].className="style1";
+                            li[n].className="style2";
+                            console.log("成功改变style!");
+                        }
+                        if(parseInt(getComputedStyle(li[i]).height)==270)
+                        {
+                            li[i].className="style2";
+                            li[m].className="style3";
+                            li[n].className="style1";
+                            console.log("成功改变style!");
+                        }
+                        if(parseInt(getComputedStyle(li[i]).height)==300)
+                        {
+                            li[i].className="style1"
+                            li[m].className="style2";
+                            li[n].className="style3";
+                            console.log("成功改变style!");
+                        }
+                        x=e.pageX-parseInt(getComputedStyle(li[i]).left);
+                        bo.style.marginTop="100px";
+                        li[i].style.zIndex="4";
+                        document.onmousemove=function(e){
+                            var event=e || window.event;
+                            console.log(parseInt(getComputedStyle(li[i]).left));
+                            if(e.pageX-x>=0&&e.pageX-x<=292)
+                            li[i].style.left=e.pageX-x+"px";
+                            if(e.pageX-x<128&&e.pageX-x>=0)
+                            {
+                                li[i].style.height=240+(e.pageX-x)/128*60+"px";
+                                li[i].style.width=160+(e.pageX-x)/128*40+"px";
+                                li[i].style.opacity=0.5+(e.pageX-x)/128*0.4;
+                                li[i].style.marginTop=30-(e.pageX-x)/128*30+"px";
+
+                                li[m].style.left=128+(e.pageX-x)/128*164+"px";
+                                li[m].style.height=300-(e.pageX-x)/128*30+"px";
+                                li[m].style.width=200-(e.pageX-x)/128*20+"px";
+                                li[m].style.marginTop=(e.pageX-x)/128*15+"px";
+                                li[m].style.opacity=0.9-(e.pageX-x)/128*0.2;
+                                li[m].style.zIndex="3";
+                                li[n].style.left=292-(e.pageX-x)/128*292+"px";
+                                li[n].style.height=270-(e.pageX-x)/128*30+"px";
+                                li[n].style.width=180-(e.pageX-x)/128*20+"px";
+                                li[n].style.marginTop=15+(e.pageX-x)/128*15+"px";
+                                li[n].style.opacity=0.7-(e.pageX-x)/128*0.2;
+                                li[n].style.zIndex="1";
+                            }
+                            if(e.pageX-x>=128&&e.pageX-x<=292)
+                            {
+                                li[i].style.height=300-(e.pageX-x-128)/164*30+"px";
+                                li[i].style.width=200-(e.pageX-x-128)/164*20+"px";
+                                li[i].style.opacity=0.9-(e.pageX-x-128)/164*0.2;
+                                li[i].style.marginTop=(e.pageX-x-128)/164*15+"px";
+
+                                li[m].style.left=292-(e.pageX-x-128)/164*292+"px";
+                                li[m].style.height=270-(e.pageX-x-128)/164*30+"px";
+                                li[m].style.width=180-(e.pageX-x-128)/164*20+"px";
+                                li[m].style.marginTop=15+(e.pageX-x-128)/164*15+"px";
+                                li[m].style.opacity=0.7-(e.pageX-x-128)/164*0.2;
+                                li[m].style.zIndex="1";
+                                li[n].style.left=(e.pageX-x-128)/164*128+"px";
+                                li[n].style.height=240+(e.pageX-x-128)/164*60+"px";
+                                li[n].style.width=160+(e.pageX-x-128)/164*40+"px";
+                                li[n].style.marginTop=30-(e.pageX-x-128)/164*30+"px";
+                                li[n].style.opacity=0.5+(e.pageX-x-128)/164*0.4;
+                                li[n].style.zIndex="2";
+                            }
+                        }
+                    }
+                    document.onmouseup=function(){
+                            document.onmousemove=null;
+                            window.clearInterval(t2);
+                            if(parseInt(getComputedStyle(li[i]).height)==240||parseInt(getComputedStyle(li[i]).height)==270||parseInt(getComputedStyle(li[i]).height)==300)
+                            {
+                                cleanstyle();
+                                // if(parseInt(getComputedStyle(li[i]).height)==240)
+                                // {
+                                //     li[i].className="action3";
+                                //     li[m].className="action1";
+                                //     li[n].className="action2";
+                                // }
+                                // if(parseInt(getComputedStyle(li[i]).height)==270)
+                                // {
+                                //     li[i].className="action2";
+                                //     li[m].className="action3";
+                                //     li[n].className="action1";
+                                // }
+                                // if(parseInt(getComputedStyle(li[i]).height)==300)
+                                // {
+                                //     li[i].className="action1";
+                                //     li[m].className="action2";
+                                //     li[n].className="action3";
+                                // }
+                            }
+                            else
+                            {
+                                if(parseInt(getComputedStyle(li[i]).left)>0&&parseInt(getComputedStyle(li[i]).left)<64)
+                                {
+                                    li[i].className="move3";
+                                    li[m].className="move1";
+                                    li[n].className="move2";
+                                }
+                                if(parseInt(getComputedStyle(li[i]).left)>=64&&parseInt(getComputedStyle(li[i]).left)<=210)
+                                {
+                                   li[i].className="move1";
+                                   li[m].className="move2";
+                                   li[n].className="move3";
+                                }
+                                if(parseInt(getComputedStyle(li[i]).left)>210&&parseInt(getComputedStyle(li[i]).left)<292)
+                                {
+                                    li[i].className="move2";
+                                    li[m].className="move3";
+                                    li[n].className="move1";
+                                }
+                                window.clearInterval(t1);
+                                t1=setInterval(function(){
+                                    if(parseInt(getComputedStyle(li[0]).height)==240)
+                                    {
+                                        window.clearInterval(t1);
+                                        li[0].className="action3";
+                                        li[1].className="action1";
+                                        li[2].className="action2";
+                                    }
+                                    if(parseInt(getComputedStyle(li[0]).height)==270)
+                                    {
+                                        window.clearInterval(t1);
+                                        li[0].className="action2";
+                                        li[1].className="action3";
+                                        li[2].className="action1";
+                                    }
+                                    if(parseInt(getComputedStyle(li[0]).height)==300)
+                                    {
+                                        window.clearInterval(t1);
+                                        li[0].className="action1";
+                                        li[1].className="action2";
+                                        li[2].className="action3";
+                                    }
+                                }
+                                ,1);
+                            }
+                            t2=setInterval("rewrite()",1);
+                        }
+                }
+
+            })(i)
+        }
+    </script>
+</body>
+</html>
